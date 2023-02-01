@@ -9,7 +9,7 @@ type SearchInputProps = {
 const SearchInput: React.FC<SearchInputProps> = () => {
   return (
     // styling for search bar, flexGrow={1} take up remaining width of parent container
-    <Flex flexGrow={1} mr={2} align="center">
+    <Flex flexGrow={1} mr={2} ml={1} align="center">
       <InputGroup>
         <InputLeftElement
           pointerEvents="none"

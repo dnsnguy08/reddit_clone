@@ -5,6 +5,7 @@ import React from "react";
 import AuthModal from "../../Modal/Auth/AuthModal";
 import AuthButtons from "./AuthButtons";
 import Icons from "./Icons";
+import UserMenu from "./UserMenu";
 
 // right side buttons of Navbar
 
@@ -23,7 +24,7 @@ const RightContent: React.FC<RightContentProps> = ({ user }) => {
           // <Button onClick={() => signOut(auth)}>Logout</Button>
           <AuthButtons />
         )}
-        {/* <Menu /> */}
+        <UserMenu user={user} />
       </Flex>
     </>
   );
