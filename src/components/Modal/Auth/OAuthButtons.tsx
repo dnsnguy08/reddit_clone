@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Button, Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import {
-  useSignInWithGoogle,
   useSignInWithGithub,
+  useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 
 import { auth } from "@/src/firebase/clientApp";
@@ -35,6 +36,7 @@ const OAuthButtons: React.FC = () => {
         Continue With GitHub
       </Button>
       {googleError && <Text>{googleError.message}</Text>}
+
       {githubError && <Text>{githubError.message}</Text>}
     </Flex>
   );

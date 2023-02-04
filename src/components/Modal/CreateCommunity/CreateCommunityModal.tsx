@@ -139,7 +139,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               >
                 {charsRemaining} Characters remaining
               </Text>
-              <Text fontSize="9pt">{error}</Text>
+              <Text fontSize="9pt" color="red">
+                {error}
+              </Text>
               <Box mt={4} mb={4}>
                 <Text fontWeight={600} fontSize={15}>
                   Community Type
