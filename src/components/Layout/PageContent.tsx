@@ -1,27 +1,21 @@
 import { Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactNode } from "react";
 
-type PageContentProps = {};
+type PageContentProps = {
+  children: ReactNode[];
+};
 
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
-  console.log("here is children", children);
-
   return (
-    <Flex justify="center" p="16 px 0px" border="1px solid red">
-      <Flex
-        width="95%"
-        justify="center"
-        maxWidth="860px"
-        border="1px solid green"
-      >
-        {/* LFH */}
+    <Flex justify="center" p="16px 0px">
+      <Flex width="95%" justify="center" maxWidth="860px">
+        {/* LHS */}
         <Flex
           direction="column"
           width={{ base: "100%", md: "65%" }}
           mr={{ base: 0, md: 6 }}
-          border="1px solid blue"
         >
-          {children && children[0 as keyof typeof children]}
+          {children && children[0]}
         </Flex>
 
         {/* RHS */}
@@ -29,9 +23,8 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
           direction="column"
           display={{ base: "none", md: "flex" }}
           flexGrow={1}
-          border="1px solid yellow"
         >
-          {children && children[1 as keyof typeof children]}
+          {children && children[1]}
         </Flex>
       </Flex>
     </Flex>
