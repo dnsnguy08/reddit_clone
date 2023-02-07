@@ -1,10 +1,10 @@
-import { authModalState } from "@/src/atoms/authModalAtom";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "@/src/firebase/clientApp";
-import { FIREBASE_ERRORS } from "@/src/firebase/errors";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
+import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 type LoginProps = {};
 
@@ -14,7 +14,6 @@ const Login: React.FC<LoginProps> = () => {
     email: "",
     password: "",
   });
-
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
@@ -60,10 +59,10 @@ const Login: React.FC<LoginProps> = () => {
       <Input
         required
         name="password"
+        onChange={onChange}
         placeholder="password"
         type="password"
         mb={2}
-        onChange={onChange}
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
@@ -79,7 +78,7 @@ const Login: React.FC<LoginProps> = () => {
         }}
         bg="gray.50"
       />
-      <Text textAlign="center" fontSize="10pt" color="red">
+      <Text textAlign="center" color="red" fontSize="10pt">
         {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
       </Text>
       <Button
@@ -94,7 +93,7 @@ const Login: React.FC<LoginProps> = () => {
       </Button>
       <Flex justifyContent="center" mb={2}>
         <Text fontSize="9pt" mr={1}>
-          Forgot Password?
+          Forgot your password?
         </Text>
         <Text
           fontSize="9pt"
@@ -111,7 +110,7 @@ const Login: React.FC<LoginProps> = () => {
         </Text>
       </Flex>
       <Flex fontSize="9pt" justifyContent="center">
-        <Text mr={1}>New Here?</Text>
+        <Text mr={1}>New here?</Text>
         <Text
           color="blue.500"
           fontWeight={700}
