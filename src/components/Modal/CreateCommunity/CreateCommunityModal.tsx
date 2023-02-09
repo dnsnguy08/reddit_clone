@@ -1,4 +1,3 @@
-import { auth, firestore } from "@/src/firebase/clientApp";
 import {
   Box,
   Button,
@@ -17,17 +16,14 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import {
-  doc,
-  getDoc,
-  runTransaction,
-  serverTimestamp,
-  setDoc,
-} from "firebase/firestore";
-import React from "react";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
+import { auth, firestore } from "../../../firebase/clientApp";
+import useDirectory from "../../../hooks/useDirectory";
 
 type CreateCommunityModalProps = {
   open: boolean;
@@ -39,18 +35,19 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   handleClose,
 }) => {
   const [user] = useAuthState(auth);
-  const [communityName, setCommunityName] = React.useState("");
-  const [charsRemaining, setCharsRemaining] = React.useState(21);
-  const [communityType, setCommunityType] = React.useState("public");
-  const [error, setError] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [communityName, setCommunityName] = useState("");
+  const [charsRemaining, setCharsRemaining] = useState(21);
+  const [communityType, setCommunityType] = useState("public");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { toggleMenuOpen } = useDirectory();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
 
     setCommunityName(event.target.value);
-
-    // calculate chars remaining in the name
+    // recalculate how many chars we have left in the name
     setCharsRemaining(21 - event.target.value.length);
   };
 
@@ -62,30 +59,26 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
   const handleCreateCommunity = async () => {
     if (error) setError("");
-    //  validate the community name
-    const format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
+    // Validate the community
+    const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     if (format.test(communityName) || communityName.length < 3) {
       setError(
-        "Community names must be between 3 and 21 characters long, and can only contain letters, numbers, or underscores"
+        "Community names must be between 3-21 characters, and can only contain letters, numbers, or underscores"
       );
       return;
     }
 
     setLoading(true);
-
     try {
       const communityDocRef = doc(firestore, "communities", communityName);
-
       await runTransaction(firestore, async (transaction) => {
-        //    Check if community exists in db
-
+        // Check if community exists in db
         const communityDoc = await transaction.get(communityDocRef);
-
         if (communityDoc.exists()) {
-          throw new Error("A community with that name already exists");
+          throw new Error(`Sorry, r/${communityName} is taken. Try another.`);
         }
 
-        // create community
+        // Create community
         transaction.set(communityDocRef, {
           creatorId: user?.uid,
           createdAt: serverTimestamp(),
@@ -95,13 +88,17 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
         // create communitySnippet on user
         transaction.set(
-          doc(firestore, `users/${user?.uid}/communitySnippet`, communityName),
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
           {
             communityId: communityName,
             isModerator: true,
           }
         );
       });
+
+      // handleClose();
+      // toggleMenuOpen();
+      // router.push(`r/${communityName}`);
     } catch (error: any) {
       console.log("handleCreateCommunity error", error);
       setError(error.message);
@@ -125,12 +122,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
           <Box pl={3} pr={3}>
             <Divider />
             <ModalCloseButton />
-            <ModalBody
-              display="flex"
-              flexDirection="column"
-              padding="10px 0px"
-              //   border="1px solid red"
-            >
+            <ModalBody display="flex" flexDirection="column" padding="10px 0px">
               <Text fontWeight={600} fontSize={15}>
                 Name
               </Text>
@@ -139,7 +131,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               </Text>
               <Text
                 position="relative"
-                top="29px"
+                top="28px"
                 left="10px"
                 width="20px"
                 color="gray.400"
@@ -149,7 +141,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               <Input
                 position="relative"
                 value={communityName}
-                size="small"
+                size="sm"
                 pl="22px"
                 onChange={handleChange}
               />
@@ -159,7 +151,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               >
                 {charsRemaining} Characters remaining
               </Text>
-              <Text fontSize="9pt" color="red">
+              <Text fontSize="9pt" color="red" pt={1}>
                 {error}
               </Text>
               <Box mt={4} mb={4}>
@@ -190,12 +182,11 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                   >
                     <Flex align="center">
                       <Icon as={BsFillEyeFill} color="gray.500" mr={2} />
-
                       <Text fontSize="10pt" mr={1}>
                         Restricted
                       </Text>
                       <Text fontSize="8pt" color="gray.500" pt={1}>
-                        Anyone can view this community, but only aproved users
+                        Anyone can view this community, but only approved users
                         can post
                       </Text>
                     </Flex>
@@ -207,7 +198,6 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                   >
                     <Flex align="center">
                       <Icon as={HiLockClosed} color="gray.500" mr={2} />
-
                       <Text fontSize="10pt" mr={1}>
                         Private
                       </Text>

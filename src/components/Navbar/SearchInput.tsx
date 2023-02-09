@@ -1,8 +1,7 @@
-/* eslint-disable react/no-children-prop */
+import React from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Flex, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import { User } from "firebase/auth";
-import React from "react";
 
 type SearchInputProps = {
   user?: User | null;
@@ -10,15 +9,13 @@ type SearchInputProps = {
 
 const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
   return (
-    // styling for search bar, flexGrow={1} take up remaining width of parent container
     <Flex flexGrow={1} maxWidth={user ? "auto" : "600px"} mr={2} align="center">
       <InputGroup>
-        <InputLeftElement
-          pointerEvents="none"
-          children={<SearchIcon color="gray.400" mb={1} />}
-        />
+        <InputLeftElement pointerEvents="none">
+          <SearchIcon color="gray.400" mb={1} />
+        </InputLeftElement>
         <Input
-          placeholder="Search Posts"
+          placeholder="Search Reddit"
           fontSize="10pt"
           _placeholder={{ color: "gray.500" }}
           _hover={{

@@ -1,8 +1,6 @@
-import { authModalState } from "@/src/atoms/authModalAtom";
-import { communityState } from "@/src/atoms/communitiesAtom";
-import { auth } from "@/src/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Flex,
   Icon,
   Menu,
@@ -19,14 +17,17 @@ import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { authModalState } from "../../../atoms/authModalAtom";
+import { communityState } from "../../../atoms/communitiesAtom";
+import { auth } from "../../../firebase/clientApp";
 
 type UserMenuProps = {
-  user?: User | null; // user optional and value can be null
+  user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
-  const resetCommunityState = useSetRecoilState(communityState);
+  const resetCommunityState = useResetRecoilState(communityState);
   const setAuthModalState = useSetRecoilState(authModalState);
 
   const logout = async () => {
@@ -64,7 +65,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                     {user?.displayName || user.email?.split("@")[0]}
                   </Text>
                   <Flex>
-                    <Icon as={IoSparkles} color="#FF5700" mr={1} />
+                    <Icon as={IoSparkles} color="brand.100" mr={1} />
                     <Text color="gray.400">1 karma</Text>
                   </Flex>
                 </Flex>
@@ -108,9 +109,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               fontSize="10pt"
               fontWeight={700}
               _hover={{ bg: "blue.500", color: "white" }}
-              onClick={() => {
-                setAuthModalState({ open: true, view: "login" });
-              }}
+              onClick={() => setAuthModalState({ open: true, view: "login" })}
             >
               <Flex align="center">
                 <Icon fontSize={20} mr={2} as={MdOutlineLogin} />

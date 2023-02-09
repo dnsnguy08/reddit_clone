@@ -1,15 +1,17 @@
-/* eslint-disable jsx-a11y/alt-text */
-import { auth } from "@/src/firebase/clientApp";
 import { Flex, Image } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Directory from "./Directory/Directory";
+import { defaultMenuItem } from "../../atoms/directoryMenuAtom";
+import { auth } from "../../firebase/clientApp";
+// import useDirectory from "../../hooks/useDirectory";
+// import Directory from "./Directory/Directory";
 import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
 
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
-
+  // const { onSelectMenuItem } = useDirectory();
   return (
     <Flex
       bg="white"
@@ -21,15 +23,17 @@ const Navbar: React.FC = () => {
         align="center"
         width={{ base: "40px", md: "auto" }}
         mr={{ base: 0, md: 2 }}
+        cursor="pointer"
+        onClick={() => {}}
       >
         <Image src="/images/redditFace.svg" height="30px" />
         <Image
           src="/images/redditText.svg"
           height="46px"
-          display={{ base: "none", md: "unset" }} // hide text on mobile, show on medium screens and up
+          display={{ base: "none", md: "unset" }}
         />
       </Flex>
-      {user && <Directory />}
+      {/* {user && <Directory />} */}
       <SearchInput user={user} />
       <RightContent user={user} />
     </Flex>

@@ -1,9 +1,7 @@
-import { authModalState } from "@/src/atoms/authModalAtom";
 import { Button } from "@chakra-ui/react";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-
-// Auth buttons on Navbar
+import { authModalState } from "../../../atoms/authModalAtom";
 
 const AuthButtons: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
