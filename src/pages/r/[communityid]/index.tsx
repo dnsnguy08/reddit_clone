@@ -1,29 +1,34 @@
-import { Community } from "@/src/atoms/communitiesAtom";
-import Header from "@/src/components/Community/Header";
-import NotFound from "@/src/components/Community/NotFound";
-import PageContent from "@/src/components/Layout/PageContent";
-import { firestore } from "@/src/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
-import React from "react";
-import safeJsonStringify from "safe-json-stringify";
+import React, { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import safeJsonStringify from "safe-json-stringify"; // fixes json timestamp errors
+import { Community, communityState } from "../../../atoms/communitiesAtom";
+import About from "../../../components/Community/About";
+import CreatePostLink from "../../../components/Community/CreatePostLink";
+import Header from "../../../components/Community/Header";
+import NotFound from "../../../components/Community/NotFound";
+import PageContent from "../../../components/Layout/PageContent";
+import Posts from "../../../components/Posts/Posts";
+import { firestore } from "../../../firebase/clientApp";
 
 type CommunityPageProps = {
-  communityData: Community;
+  communityData: Community; // communitiesAtom
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   console.log("here is data", communityData);
-  //   if (!communityData) {
-  //     return <NotFound />;
-  //   }
+
+  if (!communityData) {
+    return <NotFound />;
+  }
 
   return (
     <>
       <Header communityData={communityData} />
       <PageContent>
         <>
-          <div>LHS</div>
+          <CreatePostLink />
         </>
         <>
           <div>RHS</div>
@@ -34,7 +39,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  //  get community data and pass it to client
+  // get community data and pass it to client
   try {
     const communityDocRef = doc(
       firestore,
@@ -42,17 +47,23 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       context.query.communityId as string
     );
     const communityDoc = await getDoc(communityDocRef);
+
     return {
       props: {
-        communityData: JSON.parse(
-          safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
-        ),
+        communityData: communityDoc.exists()
+          ? JSON.parse(
+              safeJsonStringify({
+                id: communityDoc.id,
+                ...communityDoc.data(),
+              })
+            )
+          : "",
       },
     };
   } catch (error) {
-    //  could add error page here
+    // Could add error page here
     console.log("getServerSideProps error", error);
-    return { props: {} };
   }
 }
+
 export default CommunityPage;
