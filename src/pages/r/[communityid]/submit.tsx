@@ -21,9 +21,13 @@ const SubmitPostPage: React.FC = () => {
         <Box p="14px 0px" borderBottom="1px solid" borderColor="white">
           <Text>Create a post</Text>
         </Box>
-        <NewPostForm />
+        {user && <NewPostForm user={user} />}
       </>
-      <>{/* <> About </> */}</>
+      <>
+        {communityStateValue.currentCommunity && (
+          <About communityData={communityStateValue.currentCommunity} />
+        )}
+      </>
     </PageContent>
   );
 };

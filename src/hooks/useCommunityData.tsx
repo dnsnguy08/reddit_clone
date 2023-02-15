@@ -25,6 +25,7 @@ const useCommunityData = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const onJoinOrLeaveCommunity = (
     communityData: Community,
@@ -132,6 +133,20 @@ const useCommunityData = () => {
     setLoading(false);
   };
 
+  const getCommunityData = async (communityId: string) => {
+    try {
+      const communityDocRef = doc(firestore, "communities", communityId);
+      const communityDoc = await getDoc(communityDocRef);
+
+      setCommunityStateValue((prev) => ({
+        ...prev,
+        currentCommunity: { id: communityDoc.id, ...communityDoc.data() },
+      }));
+    } catch (error) {
+      console.log("getCommunityData", error);
+    }
+  };
+
   useEffect(() => {
     if (!user) {
       setCommunityStateValue((prev) => ({
@@ -142,6 +157,14 @@ const useCommunityData = () => {
     }
     getMySnippets();
   }, [user]);
+
+  useEffect(() => {
+    const { communityId } = router.query;
+
+    if (communityId && !communityStateValue.currentCommunity) {
+      getCommunityData(communityId as string);
+    }
+  }, [router.query, communityStateValue.currentCommunity]);
 
   return {
     //  data and functions
