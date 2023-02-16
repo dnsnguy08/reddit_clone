@@ -17,7 +17,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
     <>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
       <Box mt={3} mb={4}>
-        {/* <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
+        <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           MODERATING
         </Text>
         {mySnippets
@@ -31,12 +31,12 @@ const Communities: React.FC<CommunitiesProps> = () => {
               iconColor="brand.100"
               imageURL={snippet.imageURL}
             />
-          ))} */}
+          ))}
       </Box>
       <Box mt={3} mb={4}>
-        {/* <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
+        <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">
           MY COMMUNITIES
-        </Text> */}
+        </Text>
         <MenuItem
           width="100%"
           fontSize="10pt"
@@ -48,7 +48,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
             Create Community
           </Flex>
         </MenuItem>
-        {/* {mySnippets.map((snippet) => (
+        {mySnippets.map((snippet) => (
           <MenuListItem
             key={snippet.communityId}
             icon={FaReddit}
@@ -57,7 +57,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
             iconColor="blue.500"
             imageURL={snippet.imageURL}
           />
-        ))} */}
+        ))}
       </Box>
     </>
   );
