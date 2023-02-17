@@ -13,13 +13,13 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaTruckMonster } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiCakeLine } from "react-icons/ri";
 import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../atoms/authModalAtom";
 import { Community, communityState } from "../../atoms/communitiesAtom";
 import { auth, firestore, storage } from "../../firebase/clientApp";
 import useSelectFile from "../../hooks/useSelectFile";
@@ -34,6 +34,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -104,11 +105,19 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               </Text>
             )}
           </Flex>
-          <Link href={`/d/${communityData.id}/submit`}>
-            <Button mt={3} height="30px">
+          {user ? (
+            <Link href={`/d/${communityData.id}/submit`}>
+              <Button mt={3} height="30px">
+                Create Post
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              onClick={() => setAuthModalState({ open: true, view: "login" })}
+            >
               Create Post
             </Button>
-          </Link>
+          )}
           {user?.uid === communityData.creatorId && (
             <>
               <Divider />
