@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { FaReddit } from "react-icons/fa";
+import { FaTruckMonster } from "react-icons/fa";
 import { Community } from "../../atoms/communitiesAtom";
 import useCommunityData from "../../hooks/useCommunityData";
 
@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
             />
           ) : (
             <Icon
-              as={FaReddit}
+              as={FaTruckMonster}
               fontSize={64}
               position="relative"
               top={-3}

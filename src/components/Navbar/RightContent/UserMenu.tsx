@@ -13,7 +13,7 @@ import {
 import { signOut, User } from "firebase/auth";
 import React from "react";
 import { CgProfile } from "react-icons/cg";
-import { FaRedditSquare } from "react-icons/fa";
+import { FaTruckPickup } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
@@ -52,7 +52,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                   fontSize={24}
                   mr={1}
                   color="gray.300"
-                  as={FaRedditSquare}
+                  as={FaTruckPickup}
                 />
                 <Flex
                   direction="column"

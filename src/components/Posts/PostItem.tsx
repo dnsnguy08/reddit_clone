@@ -1,16 +1,3 @@
-import React, { useState } from "react";
-import { Post } from "../../atoms/postsAtom";
-import { AiOutlineDelete } from "react-icons/ai";
-import { BsChat, BsDot } from "react-icons/bs";
-import { FaReddit } from "react-icons/fa";
-import {
-  IoArrowDownCircleOutline,
-  IoArrowDownCircleSharp,
-  IoArrowRedoOutline,
-  IoArrowUpCircleOutline,
-  IoArrowUpCircleSharp,
-  IoBookmarkOutline,
-} from "react-icons/io5";
 import {
   Alert,
   AlertIcon,
@@ -23,8 +10,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import moment from "moment";
-import { useRouter } from "next/router";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
+import { BsChat, BsDot } from "react-icons/bs";
+import { FaTruckMonster } from "react-icons/fa";
+import {
+  IoArrowDownCircleOutline,
+  IoArrowDownCircleSharp,
+  IoArrowRedoOutline,
+  IoArrowUpCircleOutline,
+  IoArrowUpCircleSharp,
+  IoBookmarkOutline,
+} from "react-icons/io5";
+import { Post } from "../../atoms/postsAtom";
 
 type PostItemProps = {
   post: Post;
@@ -71,7 +71,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
       console.log("Post was successfully deleted");
       if (singlePostPage) {
-        router.push(`/r/${post.communityId}`);
+        router.push(`/d/${post.communityId}`);
       }
     } catch (error: any) {
       setError(error.message);
@@ -139,14 +139,19 @@ const PostItem: React.FC<PostItemProps> = ({
                     mr={2}
                   />
                 ) : (
-                  <Icon as={FaReddit} fontSize="18pt" mr={1} color="blue.500" />
+                  <Icon
+                    as={FaTruckMonster}
+                    fontSize="18pt"
+                    mr={1}
+                    color="blue.500"
+                  />
                 )}
-                <Link href={`r/${post.communityId}`}>
+                <Link href={`d/${post.communityId}`}>
                   <Text
                     fontWeight={700}
                     _hover={{ textDecoration: "underline" }}
                     onClick={(event) => event.stopPropagation()}
-                  >{`r/${post.communityId}`}</Text>
+                  >{`d/${post.communityId}`}</Text>
                 </Link>
                 <Icon as={BsDot} color="gray.500" fontSize={8} />
               </>

@@ -1,6 +1,7 @@
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex, Icon, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { FaTruckMonster } from "react-icons/fa";
 import { defaultMenuItem } from "../../atoms/directoryMenuAtom";
 import { auth } from "../../firebase/clientApp";
 import useDirectory from "../../hooks/useDirectory";
@@ -25,12 +26,22 @@ const Navbar: React.FC = () => {
         cursor="pointer"
         onClick={() => onSelectMenuItem(defaultMenuItem)}
       >
-        <Image src="/images/redditFace.svg" height="30px" />
-        <Image
+        <Icon as={FaTruckMonster} color="brand.100" fontSize={36} />
+        {/* <Image src="/images/redditFace.svg" height="30px" /> */}
+        <Text
+          display={{ base: "none", md: "unset" }}
+          ml={2}
+          fontSize="20px"
+          fontStyle="italic"
+          fontWeight="bold"
+        >
+          Drive
+        </Text>
+        {/* <Image
           src="/images/redditText.svg"
           height="46px"
           display={{ base: "none", md: "unset" }}
-        />
+        /> */}
       </Flex>
       {user && <Directory />}
       <SearchInput user={user} />

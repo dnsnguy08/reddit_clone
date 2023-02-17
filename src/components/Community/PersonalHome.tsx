@@ -1,6 +1,6 @@
 import { Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import { FaReddit } from "react-icons/fa";
+import { FaTruckMonster } from "react-icons/fa";
 
 const PersonalHome: React.FC = () => {
   return (
@@ -26,7 +26,7 @@ const PersonalHome: React.FC = () => {
       ></Flex>
       <Flex direction="column" p="12px">
         <Flex align="center" mb={2}>
-          <Icon as={FaReddit} fontSize={50} color="brand.100" mr={2} />
+          <Icon as={FaTruckMonster} fontSize={45} color="brand.100" mr={2} />
           <Text fontWeight={600}>Home</Text>
         </Flex>
         <Stack spacing={3}>
