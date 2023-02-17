@@ -1,8 +1,19 @@
 import { Button, Flex, Icon, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { FaTruckMonster } from "react-icons/fa";
+import { useSetRecoilState } from "recoil";
+import { authModalState } from "../../atoms/authModalAtom";
+import { auth, firestore, storage } from "../../firebase/clientApp";
+import useDirectory from "../../hooks/useDirectory";
+import CreateCommunityModal from "../Modal/CreateCommunity/CreateCommunityModal";
 
 const PersonalHome: React.FC = () => {
+  const [user] = useAuthState(auth);
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const { toggleMenuOpen } = useDirectory();
+  const [open, setOpen] = useState(false);
+
   return (
     <Flex
       direction="column"
@@ -33,10 +44,38 @@ const PersonalHome: React.FC = () => {
           <Text fontSize="9pt">
             Your personal Forum frontpage, built for you.
           </Text>
-          <Button height="30px">Create Post</Button>
-          <Button variant="outline" height="30px">
-            Create Community
-          </Button>
+
+          {user ? (
+            <Flex direction="column" padding={4}>
+              <Button height="30px" mb={2} onClick={() => toggleMenuOpen()}>
+                Create Post
+              </Button>
+              <Button
+                variant="outline"
+                height="30px"
+                onClick={() => toggleMenuOpen()}
+              >
+                Create Community
+              </Button>
+            </Flex>
+          ) : (
+            <Flex direction="column" padding={4}>
+              <Button
+                height="30px"
+                mb={2}
+                onClick={() => setAuthModalState({ open: true, view: "login" })}
+              >
+                Create Post
+              </Button>
+              <Button
+                variant="outline"
+                height="30px"
+                onClick={() => setAuthModalState({ open: true, view: "login" })}
+              >
+                Create Community
+              </Button>
+            </Flex>
+          )}
         </Stack>
       </Flex>
     </Flex>
