@@ -2,7 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import safeJsonStringify from "safe-json-stringify"; // fixes json timestamp errors
+import safeJsonStringify from "safe-json-stringify";
 import { Community, communityState } from "../../../atoms/communitiesAtom";
 import About from "../../../components/Community/About";
 import CreatePostLink from "../../../components/Community/CreatePostLink";
@@ -13,16 +13,12 @@ import Posts from "../../../components/Posts/Posts";
 import { firestore } from "../../../firebase/clientApp";
 
 type CommunityPageProps = {
-  communityData: Community; // communitiesAtom
+  communityData: Community;
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   console.log("here is data", communityData);
   const setCommunityStateValue = useSetRecoilState(communityState);
-
-  if (!communityData) {
-    return <NotFound />;
-  }
 
   useEffect(() => {
     setCommunityStateValue((prev) => ({
@@ -30,6 +26,10 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       currentCommunity: communityData,
     }));
   }, [communityData]);
+
+  if (!communityData) {
+    return <NotFound />;
+  }
 
   return (
     <>
@@ -61,10 +61,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       props: {
         communityData: communityDoc.exists()
           ? JSON.parse(
-              safeJsonStringify({
-                id: communityDoc.id,
-                ...communityDoc.data(),
-              })
+              safeJsonStringify({ id: communityDoc.id, ...communityDoc.data() })
             )
           : "",
       },
