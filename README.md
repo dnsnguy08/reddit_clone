@@ -52,7 +52,7 @@ Create a reddit-clone/forum for members to share stories, ideas, news relating t
 - Chakra UI
 
 ### Motivation
-I wanted to build a CRUD app with server side rendering using Next.js and Typescript.
+I wanted to build a Full Stack CRUD app with server side rendering using Next.js and Typescript.
 
 ## License
 MIT License
